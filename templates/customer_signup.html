@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            color: #fff;
+        }
+
+        .signup-container {
+            background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
+            color: #d4d4d4;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff9c00;
+            text-shadow: 1px 1px 10px rgba(255, 156, 0, 0.8);
+        }
+        
+
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2);
+            font-size: 0.95rem;
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #ff8c00, #ff6a00);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ff9c00, #ff8000);
+            transform: scale(1.05);
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <h2>Customer Signup</h2>
+        <form action="/c_register" method="POST">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+            <input type="text" class="form-control" id="userName" name="username" placeholder="Enter your name" required>
+            <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+            <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter your pin code" required>
+            <input type="text" class="form-control" id="phone" name="phone_number" placeholder="Enter your phone number" required>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+        <div class="form-footer">
+            <p>Already have an account? <a href="{{ url_for('logout') }}">Login</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

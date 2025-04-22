@@ -1,0 +1,126 @@
+/* Global Styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(to bottom right, #6a82fb, #fc5c7d); /* Soft blue to pink gradient */
+    color: #ffffff;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 0 1rem;
+}
+
+/* Table Container */
+.table-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Table Header */
+.table-container h2 {
+    color: #333;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Admin Table */
+table {
+    background: #012B39;
+    border-radius: 0.25em;
+    border-collapse: collapse;
+    margin: 1em;
+  }
+  th {
+    border-bottom: 1px solid #364043;
+    color: #E2B842;
+    font-size: 0.85em;
+    font-weight: 600;
+    padding: 0.5em 1em;
+    text-align: left;
+  }
+  td {
+    color: #fff;
+    font-weight: 400;
+    padding: 0.65em 1em;
+  }
+  .disabled td {
+    color: #4F5F64;
+  }
+  tbody tr {
+    transition: background 0.25s ease;
+  }
+  tbody tr:hover {
+    background: #014055;
+  }
+  
+  
+/* Table Actions (e.g., buttons for edit, delete) */
+table .actions {
+    display: flex;
+    gap: 10px;
+}
+
+table .actions button {
+    background-color: #26a69a; /* Soft green */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Rounded button edges */
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for buttons */
+}
+
+table .actions button:hover {
+    background-color: #00796b; /* Darker green on hover */
+    transform: translateY(-2px); /* Button lift effect */
+}
+
+/* Pagination Styles */
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.pagination li {
+    margin: 0 0.5rem;
+}
+
+.pagination a {
+    text-decoration: none;
+    background-color: #4e54c8;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.pagination a:hover {
+    background-color: #333;
+}
+
+/* Responsive Design for Tables */
+@media (max-width: 768px) {
+    .table-container {
+        padding: 1.5rem;
+    }
+
+    table th, table td {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .pagination a {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}

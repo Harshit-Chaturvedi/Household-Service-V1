@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            color: #fff;
+        }
+
+        .login-container {
+            background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
+            color: #d4d4d4;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-message h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff9c00;
+            text-shadow: 1px 1px 10px rgba(255, 156, 0, 0.8);
+        }
+
+        .welcome-message p {
+            font-size: 1rem;
+            color: #ddd;
+            margin-top: 10px;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2);
+            font-size: 0.95rem;
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #ff8c00, #ff6a00);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ff9c00, #ff8000);
+            transform: scale(1.05);
+        }
+
+        .signup-links {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .signup-links a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-links a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            width: 100%;
+            max-width: 400px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="welcome-message">
+            <h2>Welcome To <br> A2Z  Services</h2>
+            <p>Log in to your account and continue exploring.</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form id="loginForm" action="/" method="POST">
+            <div class="mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <div class="signup-links">
+            <p>Don't have an account?</p>
+            <p>
+                <a href="/customer_signup_form">Sign up as Customer</a> |
+                <a href="/sp_signup_form">Sign up as Professional</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

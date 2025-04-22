@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ professional.name }}'s Dashboard - Today's Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .navbar {
+            background: rgba(30, 30, 60, 0.8);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #ff9f00 !important;
+        }
+
+        .nav-link {
+            color: #fff !important;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        .nav-link:hover {
+            color: #ff9f00 !important;
+            text-decoration: underline;
+        }
+
+        .btn-outline-success {
+            color: #ff9f00;
+            border-color: #ff9f00;
+        }
+
+        .btn-outline-success:hover {
+            background: #ff9f00;
+            color: #ffffff;
+            border-color: #ff9f00;
+        }
+
+        .section {
+            padding: 50px 0;
+        }
+
+        .custom-card {
+            background: rgba(30, 30, 60, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .custom-card h2 {
+            color: #ff9f00;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .btn-secondary {
+            background-color: #ff9f00;
+            border: none;
+            color: #ffffff;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 10px 20px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e87a00;
+        }
+
+        .table {
+            background: #f9f9f9; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: #ff9f00; 
+            color: #ffffff; 
+            font-weight: bold;
+        }
+
+        .table tbody tr {
+            background: #ffffff; 
+            color: #333333; 
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: #f2f2f2; 
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 159, 0, 0.2); 
+            cursor: pointer; 
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dddddd;
+        }
+
+        .text-center {
+            color: #555555; 
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(30, 30, 60, 0.8);
+            color: #ff9f00;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                text-align: center;
+            }
+
+            .section {
+                padding: 20px 0;
+            }
+
+            .custom-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">A2Z Services</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('professional_dashboard') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('sp_summary') }}">Summary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('professional_profile') }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="{{ url_for('sp_search') }}" method="GET">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Address/Pincode" aria-label="Search" required>
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <br>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <div class="container mt-5">
+        <!-- Today's Services: Pending Requests -->
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">Today's Services</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>S No.</th>
+                                <th>Service Name and Description</th>
+                                <th>Customer Name</th>
+                                <th>Contact Phone</th>
+                                <th>Location</th>
+                                <th>Service Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in requests if request.status == 'Pending' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ request.service.name }}<br>Description: {{request.service.description}}</td>
+                                <td>{{ request.customer.username }}</td>
+                                <td>{{ request.customer.phone_number }}</td>
+                                <td>{{ request.customer.address }} {{request.customer.pin_code}}</td>
+                                <td>{{ request.request_date }}</td>
+                                <td>
+                                    <form action="{{ url_for('accept_request') }}" method="POST" style="display: inline;">
+                                        <input type="hidden" name="request_id" value="{{ request.id }}">
+                                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                            <td colspan="6" class="text-center">No service available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Closed Services Section -->
+<h3 class="mt-5">Closed Services</h3>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>S No.</th>
+                <th>Service Name and Description</th>
+                <th>Customer Name</th>
+                <th>Contact Phone</th>
+                <th>Location</th>
+                <th>Service Date</th>
+                <th>Status</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in closed_requests %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ request.service.name }}<br>Description: {{request.service.description}}</td>
+                <td>{{ request.customer.username }}</td>
+                <td>{{ request.customer.phone_number }}</td>
+                <td>{{ request.customer.address }}{{ request.customer.pin_code }}</td>
+                <td>{{ request.completion_date if request.status == 'Completed' else request.request_date }}</td>
+                <td>{{ request.status if request.status == 'Completed' else 'In Progress' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="6" class="text-center">No service available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

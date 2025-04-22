@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Household Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: rgba(30, 30, 60, 0.9);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #ff9f00 !important;
+        }
+
+        .nav-link {
+            color: #ffffff !important;
+        }
+
+        .nav-link:hover {
+            color: #ff9f00 !important;
+            text-decoration: underline;
+        }
+
+        h3 {
+            color: #ff9f00;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            background: #f9f9f9; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: #ff9f00; 
+            color: #ffffff; 
+            font-weight: bold;
+        }
+
+        .table tbody tr {
+            background: #ffffff; 
+            color: #333333; 
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: #f2f2f2; 
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 159, 0, 0.2); 
+            cursor: pointer; 
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dddddd; 
+        }
+
+        .text-center {
+            color: #555555; 
+        }
+        
+
+        .btn {
+            border-radius: 5px;
+            font-size: 14px;
+            padding: 5px 15px;
+        }
+
+        .btn-outline-dark {
+            color: #ff9f00;
+            border: 1px solid #ff9f00;
+        }
+
+        .btn-outline-dark:hover {
+            background-color: #ff9f00;
+            color: #ffffff;
+        }
+
+        .btn-dark {
+            background-color: #ff9f00;
+            border: none;
+        }
+
+        .btn-dark:hover {
+            background-color: #e87a00;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">A2Z Services</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('Admin_dashboard') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_summary') }}">Summary</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+                <form action="/admin_search" class="d-flex" method="GET">
+                    <input class="form-control me-2" type="search" name="search" placeholder="Service Name" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <br>
+
+
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Welcome to Admin Dashboard</h2>
+
+        
+
+        {% block content %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+        <!-- Services Table -->
+        <div class="container mt-5">
+            <h3>Services</h3>
+            <table class="table table-bordered ">
+                <thead class="table table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Service Name</th>
+                        <th>Base Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for service in services %}
+                    <tr>
+                        <td>{{ service.id }}</td>
+                        <td>{{ service.name }}</td>
+                        <td>Rs.{{ service.base_price }}</td>
+                        <td>
+                            <!-- Edit and Delete buttons -->
+                            <a href="{{ url_for('edit_service', id=service.id) }}" class="btn btn-outline-dark btn-sm">Edit</a>
+
+                            <form action="{{ url_for('delete_service', id=service.id) }}" method="POST" style="display:inline-block;">
+                                <button type="submit" class="btn btn-dark btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ url_for('new_service') }}" class="btn btn-outline-dark btn-sm mb-3">+ New Service</a>
+        </div>    
+           
+        <!-- flaggable_users -->
+        <div class="container mt-5">
+            <h3>Flag/Unflag Customers and Service Professionals</h3>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Flag Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in flaggable_users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ "Flagged" if user.flagged else "Not Flagged" }}</td>
+                        <td>
+                            {% if not user.flagged %}
+                                <form action="{{ url_for('flag_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Flag</button>
+                                </form>
+                            {% else %}
+                                <form action="{{ url_for('unflag_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-success btn-sm">Unflag</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Professionals Table -->
+        <div class="container mt-5">
+            <h3>Service Professionals Pending Verification</h3>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Service</th>
+                        <th>Action</th>
+                        <th>View Document</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sp in all_sp %}
+                    <tr>
+                        <td>{{ sp.id }}</td>
+                        <td>{{ sp.user.username }}</td>
+                        <td>{{ sp.service }}</td>
+                        <td>
+                            <form action="{{ url_for('approve_sp', id=sp.id) }}" method="POST" style="display:inline-block;">
+                                <button type="submit" class="btn btn-outline-dark">Approve</button>
+                            </form>
+                            <form action="{{ url_for('reject_sp', id=sp.id) }}" method="POST" style="display:inline-block;">
+                                <button type="submit" class="btn btn-dark">Reject</button>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('view_document', filename=sp.documents) }}" class="btn btn-outline-dark" target="_blank">View</a>
+                        </td>
+                    </tr>
+                    {% else %}
+            <tr>
+              <td colspan="6" class="text-center">No Service Professionals Pending Verification.</td>
+            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="container mt-5">
+        <!-- Service Requests Table -->
+            <h3>Service Requests</h3>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Assigned Professional</th>
+                        <th>Customer Name</th>
+                        <th>Service Name</th>
+                        <th>Requested Date</th>
+                        <th>Status</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in service_requests %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.professional.user.username if request.professional_id else "N/A"}}</td> 
+                        <td>{{request.customer.username}}</td>
+                        <td>{{request.service.name}}</td>
+                        <td>{{ request.request_date.strftime('%Y-%m-%d') }}</td> 
+                        <td>{{ request.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    
+        </div>
+    </div>    
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
