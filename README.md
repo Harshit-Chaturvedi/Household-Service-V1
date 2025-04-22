@@ -26,7 +26,7 @@ A basic web platform that connects **customers** with **household service profes
 ## ⚙️ How to Run Locally
 
 ```bash
-git clone https://github.com/Harshit-Chaturvedi/household-services-v1.git
-cd household-services-v1
+git clone https://github.com/Harshit-Chaturvedi/Household-Service-V1.git
+cd Household-Service-V1
 pip install -r requirements.txt
 python app.py
